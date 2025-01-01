@@ -19,20 +19,13 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val btnApply = findViewById<Button>(R.id.btnApply)
-        val edtFirstName = findViewById<TextView>(R.id.edtFirstName)
-        val edtLastName = findViewById<TextView>(R.id.edtLastName)
-        val edtDateOfBirth = findViewById<TextView>(R.id.edtDateOfBirth)
-        val edtCountry = findViewById<TextView>(R.id.edtCountry)
+        val btnCount = findViewById<Button>(R.id.btnCount)
+        val tvCount = findViewById<TextView>(R.id.tvCount)
 
-
-        btnApply.setOnClickListener {
-            val firstName = edtFirstName.text.toString()
-            val lastName = edtLastName.text.toString()
-            val birthDate = edtDateOfBirth.text.toString()
-            val country = edtCountry.text.toString()
-            Log.d("MainActivity", "$firstName $lastName born on $birthDate from $country just applied to formular.")
-
+        var count = 0
+        btnCount.setOnClickListener {
+            count++
+            tvCount.text = "Let's count together: $count"
         }
     }
 }
