@@ -3,6 +3,7 @@ package com.example.tutorials
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,13 +20,18 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val btnCount = findViewById<Button>(R.id.btnCount)
-        val tvCount = findViewById<TextView>(R.id.tvCount)
 
-        var count = 0
-        btnCount.setOnClickListener {
-            count++
-            tvCount.text = "Let's count together: $count"
+        val edFirstNumber = findViewById<EditText>(R.id.etFirstNumber)
+        val edSecondNumber = findViewById<EditText>(R.id.etSecondNumber)
+        val tvResult = findViewById<TextView>(R.id.tvResult)
+        val  btnAdd = findViewById<Button>(R.id.btnAdd)
+
+        btnAdd.setOnClickListener {
+            val firstNumber = edFirstNumber.text.toString().toInt()
+            val serviceConfig = edSecondNumber.text.toString().toInt()
+            val result = firstNumber + serviceConfig
+            tvResult.text = result.toString()
         }
+
     }
 }
