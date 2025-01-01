@@ -1,12 +1,13 @@
 package com.example.tutorials
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +19,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-//        val btnApply = findViewById<Button>(R.id.btnApply)
+        val btnApply = findViewById<Button>(R.id.btnApply)
+        val edtFirstName = findViewById<TextView>(R.id.edtFirstName)
+        val edtLastName = findViewById<TextView>(R.id.edtLastName)
+        val edtDateOfBirth = findViewById<TextView>(R.id.edtDateOfBirth)
+        val edtCountry = findViewById<TextView>(R.id.edtCountry)
+
 
         btnApply.setOnClickListener {
             val firstName = edtFirstName.text.toString()
