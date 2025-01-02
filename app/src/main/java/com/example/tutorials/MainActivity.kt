@@ -1,10 +1,12 @@
 package com.example.tutorials
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet.Layout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -20,8 +22,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         val btnShowToast = findViewById<Button>(R.id.btnShowToast)
-       btnShowToast.setOnClickListener{
-           Toast.makeText(this, "Hi, I am a toast.", Toast.LENGTH_LONG).show()
+        btnShowToast.setOnClickListener{
+           Toast(this).apply {
+               duration = Toast.LENGTH_LONG
+               view = layoutInflater.inflate(R.layout.custom_toast, clToast)
+               show()
+           }
        }
     }
 }
