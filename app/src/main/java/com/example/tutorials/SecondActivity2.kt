@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.Serializable
 
 class SecondActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,13 +18,8 @@ class SecondActivity2 : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val name = intent.getStringExtra("EXTRA_NAME")
-        val age = intent.getIntExtra("EXTRA_AGE", 0)
-        val country = intent.getStringExtra("EXTRA_COUNTRY")
-
-        val personString = "$name is $age years old and lives in $country"
-
+        val person = intent.getSerializableExtra("EXTRA_PERSON") as Serializable
         val tvPerson = findViewById<TextView>(R.id.tvPerson)
-        tvPerson.text = personString
+        tvPerson.text = person.toString()
     }
 }

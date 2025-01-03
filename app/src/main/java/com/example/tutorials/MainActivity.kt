@@ -1,15 +1,15 @@
 package com.example.tutorials
 
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import org.w3c.dom.Text
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,24 +22,51 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val etName = findViewById<TextView>(R.id.etName)
-        val etAge = findViewById<TextView>(R.id.etAge)
-        val etCountry = findViewById<TextView>(R.id.etCountry)
+        val btnRequestPermissions = findViewById<Button>(R.id.btnRequestPermissions)
+        btnRequestPermissions.setOnClickListener{
+            requestPermissions()
+        }
+    }
 
-        val btnApply = findViewById<Button>(R.id.btnApply)
-        btnApply.setOnClickListener {
+    private fun hasWriteExternalStoragePermission() =
+        ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
-            val name = etName.text.toString()
-            val age = etAge.text.toString().toInt()
-            val country = etCountry.text.toString()
+    private fun hasLocationForegroundPermission() =
+        ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
-            Intent(this, SecondActivity2::class.java).also {
-                it.putExtra("EXTRA_NAME", name)
-                it.putExtra("EXTRA_AGE", age)
-                it.putExtra("EXTRA_COUNTRY", country)
-                startActivity(it)
-            }
+    private fun hasLocationBackgroundPermission() =
+        ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun requestPermissions() {
+        var permissionsToRequest = mutableListOf<String>()
+        if(!hasWriteExternalStoragePermission()) {
+            permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if(!hasLocationForegroundPermission()) {
+            permissionsToRequest.add(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+        if(!hasLocationBackgroundPermission()) {
+            permissionsToRequest.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         }
 
+        if(permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 0 && grantResults.isNotEmpty()) {
+            for(i in grantResults.indices) {
+                if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("PermissionsRequest", "${permissions[i]} granted.")
+                }
+            }
+        }
     }
 }
