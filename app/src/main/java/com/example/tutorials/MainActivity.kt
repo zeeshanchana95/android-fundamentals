@@ -1,12 +1,10 @@
 package com.example.tutorials
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.viewpager2.widget.ViewPager2
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,26 +17,24 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val firstItemFragment = FirstItemFragment()
-        val secondItemFragment = SecondItemFragment()
-        val thirdItemFragment = ThirdItemFragment()
+        val images = listOf(
+            R.drawable.one,
+            R.drawable.two,
+            R.drawable.three,
+            R.drawable.four,
+            R.drawable.five,
+            R.drawable.six,
+            R.drawable.seven
+        )
 
-        setCurrentFragment(firstItemFragment)
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
 
-        val bottomNavifationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavifationView.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.miHome -> setCurrentFragment(firstItemFragment)
-                R.id.miMessages -> setCurrentFragment(secondItemFragment)
-                R.id.miProfile -> setCurrentFragment(thirdItemFragment)
-            }
-            true
-        }
+        val adapter = ViewPagerAdapter(images)
+        viewPager.adapter = adapter
+        viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
+        viewPager.beginFakeDrag()
+        viewPager.fakeDragBy(-10f)
+        viewPager.endFakeDrag()
     }
-
-    private fun setCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, fragment)
-            commit()
-        }
 }
