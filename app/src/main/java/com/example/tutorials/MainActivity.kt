@@ -1,12 +1,11 @@
 package com.example.tutorials
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.Toast
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,32 +16,37 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        val sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
+        val editor = sharedPref.edit()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val navView = findViewById<NavigationView>(R.id.navView)
-        navView.setNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.miItem1 ->
-                    Toast.makeText(applicationContext, "Clicked Item 1", Toast.LENGTH_SHORT).show()
-                R.id.miItem2 ->
-                    Toast.makeText(applicationContext, "Clicked Item 2", Toast.LENGTH_SHORT).show()
-                R.id.miItem3 ->
-                    Toast.makeText(applicationContext, "Clicked Item 3", Toast.LENGTH_SHORT).show()
+        val btnLoad  = findViewById<Button>(R.id.btnLoad)
+        val btnSave = findViewById<Button>(R.id.btnSave)
+        val etName = findViewById<EditText>(R.id.etName)
+        val etAge = findViewById<EditText>(R.id.etAge)
+        val cbAdult = findViewById<CheckBox>(R.id.cbAdult)
+
+        btnSave.setOnClickListener {
+            val name = etName.text.toString()
+            val age = etAge.text.toString().toInt()
+            val isAdult = cbAdult.isChecked
+            editor.apply {
+                putString("name", name)
+                putInt("age", age)
+                putBoolean("isAdult", isAdult)
+                apply()
             }
-            true
         }
 
+        btnLoad.setOnClickListener {
+            val name = sharedPref.getString("name", null)
+            val age = sharedPref.getInt("age", 0)
+            val isAdult = sharedPref.getBoolean("isAdult", false)
+
+            etName.setText(name)
+            etAge.setText("$age")
+            cbAdult.isChecked = isAdult
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
 }
